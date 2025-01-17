@@ -5,7 +5,8 @@ compatibility_date = "2025-01-17"
 # compatibility_flags = [ "nodejs_compat" ]
 
 [vars]
-DATABASE_URL = "postgresql://mediumBlogs_owner:B80gysvwoJEO@ep-nameless-mud-a5bt54m2-pooler.us-east-2.aws.neon.tech/mediumBlogs?sslmode=require"
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiNWEzYWY3MzEtZDdmYi00MDAyLWIxZDMtNTk4NjY4OGU5NzRiIiwidGVuYW50X2lkIjoiZmJmMTAzNTM2ZGJhNGI4NTU3ZjEzMjgwMjcyNGM3ZjhjZDgzZGRiNzU0OTA5MDAyOGQ1ZWFlODQzNjA3MzQyNiIsImludGVybmFsX3NlY3JldCI6IjJjYzRlN2EwLTFkNzYtNGU1ZC04YTc2LTlhNTIyYTAwNjdjNSJ9.YNfIhkXONQYvxiZ1H9KzQNoIDx-Q33OQMKBeWXHWJ3w"
+JWT_SECRET="venteury2025"
 
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"
