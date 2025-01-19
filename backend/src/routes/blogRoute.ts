@@ -3,7 +3,6 @@ import { withAccelerate } from "@prisma/extension-accelerate"; // Import Prisma 
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
 
-
 import { createPostInput, updatePostInput } from "@venteury/blog-common";
 
 export const blogRoute = new Hono<{
@@ -39,8 +38,6 @@ blogRoute.get("/all", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-
-  console.log(c.get("user_id"));
 
   try {
     const posts = await prisma.post.findMany({
