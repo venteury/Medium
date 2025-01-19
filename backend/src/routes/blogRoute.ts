@@ -2,7 +2,9 @@ import { PrismaClient } from "@prisma/client/edge"; // Use the Prisma Client for
 import { withAccelerate } from "@prisma/extension-accelerate"; // Import Prisma Accelerate extension
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
-import { createPostInput, updatePostInput } from "../utils/validation";
+
+
+import { createPostInput, updatePostInput } from "@venteury/blog-common";
 
 export const blogRoute = new Hono<{
   Bindings: {
