@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
+import logo from "../assets/logo.svg";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -67,27 +68,22 @@ const Template: React.FC<TemplateProps> = ({ children }) => {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
+        <Header style={{ padding: "0 16px", background: colorBgContainer,   }}>
+          <div className="w-full flex justify-between items-center">
+            <img src={logo} alt="" />
+          </div>
+        </Header>
+        <Content style={{ margin: "18px 12px 0", overflow: "initial" }}>
           <div
             style={{
-              padding: 24,
+              padding: 12,
+              height: "100%",
               textAlign: "center",
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
           >
-            <p>long content</p>
             <>{children}</>
-            {
-              // indicates very long content
-              Array.from({ length: 100 }, (_, index) => (
-                <React.Fragment key={index}>
-                  {index % 20 === 0 && index ? "more" : "..."}
-                  <br />
-                </React.Fragment>
-              ))
-            }
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>

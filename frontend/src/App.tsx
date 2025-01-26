@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import PageLayout from "./components/PageLayout";
+import { lazy } from "react";
+const HomePage = lazy(() => import("./pages/Homepage.tsx"));
 interface ProtectedRouteProps {
   isAllowed: boolean;
   redirectPath?: string;
@@ -30,7 +32,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="/" element={<h1>Home Page</h1>} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/blog" element={<h1>Blog Page</h1>} />
           <Route path="/about" element={<h1>About Page</h1>} />
           <Route path="/contact" element={<h1>Contact Page</h1>} />
