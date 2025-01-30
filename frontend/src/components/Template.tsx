@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
-  TeamOutlined,
-  UploadOutlined,
   UserOutlined,
-  VideoCameraOutlined,
+  FileAddOutlined,
+  ReadOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
@@ -27,18 +23,14 @@ const siderStyle: React.CSSProperties = {
 };
 
 const items: MenuProps["items"] = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  AppstoreOutlined,
-  TeamOutlined,
-  ShopOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
+  { icon: UserOutlined, label: "Home", key: "home" },
+  { icon: ReadOutlined, label: "My Blogs", key: "myBlogs" },
+  { icon: FileAddOutlined, label: "New Blog", key: "newBlog" },
+  { icon: LogoutOutlined, label: "Logout", key: "logout" },
+].map((itm, index) => ({
+  key: String(itm?.key || index),
+  icon: React.createElement(itm?.icon),
+  label: String(itm.label),
 }));
 
 interface TemplateProps {
@@ -65,15 +57,30 @@ const Template: React.FC<TemplateProps> = ({ children }) => {
           mode="inline"
           defaultSelectedKeys={["4"]}
           items={items}
+          onClick={(e) => {
+            console.log(e);
+          }}
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: "0 16px", background: colorBgContainer,   }}>
+        <Header
+          style={{
+            padding: "0 16px",
+            background: colorBgContainer,
+            position: "sticky",
+            top: 0,
+          }}
+        >
           <div className="w-full flex justify-between items-center">
             <img src={logo} alt="" />
           </div>
         </Header>
-        <Content style={{ margin: "18px 12px 0", overflow: "initial" }}>
+        <Content
+          style={{
+            margin: "18px 12px 0",
+            overflow: "initial",
+          }}
+        >
           <div
             style={{
               padding: 12,

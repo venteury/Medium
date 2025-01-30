@@ -1,7 +1,10 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import PageLayout from "./components/PageLayout";
+
 import { lazy } from "react";
 const HomePage = lazy(() => import("./pages/Homepage.tsx"));
+const LognIn = lazy(() => import("./pages/Login.tsx"));
+const SignUp = lazy(() => import("./pages/SignUp.tsx"));
 interface ProtectedRouteProps {
   isAllowed: boolean;
   redirectPath?: string;
@@ -22,8 +25,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/login" element={<h1>Login Page</h1>} />
-        <Route path="/signup" element={<h1>Sign up Page</h1>} />
+        <Route path="/login" element={<LognIn />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route
           path="/"
           element={
