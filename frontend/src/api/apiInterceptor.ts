@@ -13,6 +13,19 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// Handle expired tokens
+apiClient.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      // Token expired or invalid
+      localStorage.removeItem("token");
+      window.location.href = "/login"; // Force logout
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Handle expired tokens & refresh token logic
 // apiClient.interceptors.response.use(
 //   (response) => response,

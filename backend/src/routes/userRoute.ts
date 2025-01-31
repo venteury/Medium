@@ -42,7 +42,7 @@ userRoute.post("/signup", async (c) => {
     return c.json({ success: true, jwt: token });
   } catch (error) {
     console.error(error);
-    return c.json({ error: "Internal server error" }, 500);
+    return c.json({ error }, 500);
   } finally {
     await prisma.$disconnect();
   }
@@ -82,7 +82,7 @@ userRoute.post("/login", async (c) => {
     return c.json({ success: true, jwt: token });
   } catch (error) {
     console.error(error);
-    return c.json({ error: "Internal server error" }, 500);
+    return c.json({ error }, 500);
   } finally {
     await prisma.$disconnect();
   }

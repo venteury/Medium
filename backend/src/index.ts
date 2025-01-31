@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 // import { sign, verify } from "hono/jwt";
 
 import { logger } from "hono/logger";
@@ -13,6 +14,15 @@ const app = new Hono<{
     user_id: string;
   };
 }>();
+
+app.use(
+  cors({
+    origin: "*", // Allow all origins
+    allowMethods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+    allowHeaders: ["Content-Type", "Authorization"], // Allowed headers
+    maxAge: 600, // Cache preflight response
+  })
+);
 
 app.use(logger());
 // app.use("/api/v1/*", async (c, next) => {

@@ -1,14 +1,23 @@
 import apiClient from "../apiInterceptor";
 import { AUTH_ENDPOINTS } from "../endpoints/authEndpoints";
+import { SignupType, SigninType } from "@venteury/blog-common";
 
-const login = async (email: string, password: string) => {
+const login = async (data: SignupType) => {
   try {
-    const { data } = await apiClient.post(AUTH_ENDPOINTS.LOGIN, {
-      email,
-      password,
-    });
-    localStorage.setItem("token", data.token);
-    return data;
+    const res = await apiClient.post(AUTH_ENDPOINTS.LOGIN, data);
+    console.log(res);
+    localStorage.setItem("token", res.data.jwt);
+    return res.data;
+  } catch (error: any) {
+    throw error.response?.data || error.message;
+  }
+};
+
+const signup = async (data: SigninType) => {
+  try {
+    const res = await apiClient.post(AUTH_ENDPOINTS.SIGNUP, data);
+    localStorage.setItem("token", res.data.token);
+    return res.data;
   } catch (error: any) {
     throw error.response?.data || error.message;
   }
@@ -19,4 +28,4 @@ const logout = () => {
   window.location.href = "/login";
 };
 
-export { login, logout };
+export { login, signup, logout };

@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import PageLayout from "./components/PageLayout";
-
 import { lazy } from "react";
 const HomePage = lazy(() => import("./pages/Homepage.tsx"));
 const LognIn = lazy(() => import("./pages/Login.tsx"));
@@ -30,7 +29,10 @@ function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute redirectPath="/login" isAllowed={true}>
+            <ProtectedRoute
+              redirectPath="/login"
+              isAllowed={(localStorage.getItem("token") ?? "") !== ""}
+            >
               <PageLayout />
             </ProtectedRoute>
           }
