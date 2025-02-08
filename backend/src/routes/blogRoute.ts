@@ -54,6 +54,40 @@ blogRoute.get("/all", async (c) => {
   }
 });
 
+blogRoute.get("/getAllBlog", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    const page = parseInt(c.req.query("page") ?? "1");
+    const limit = parseInt(c.req.query("limit") ?? "10");
+    const skip = (page - 1) * limit;
+
+    const posts = await prisma.post.findMany({
+      take: limit,
+      skip,
+    });
+
+    const totalPosts = await prisma.post.count();
+
+    return c.json({
+      data: posts,
+      meta: {
+        page,
+        limit,
+        totalPosts,
+        totalPages: Math.ceil(totalPosts / limit),
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return c.json({ error: error }, 500);
+  } finally {
+    await prisma.$disconnect();
+  }
+});
+
 blogRoute.get("/:id", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -133,6 +167,27 @@ blogRoute.put("/update/:id", async (c) => {
   } catch (error) {
     console.error(error);
     return c.json({ error: "Internal server error" }, 500);
+  } finally {
+    await prisma.$disconnect();
+  }
+});
+
+blogRoute.delete("/delete/:id", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    const id = c.req.param("id");
+    const post = await prisma.post.delete({
+      where: {
+        id: id,
+      },
+    });
+    return c.json({ success: true, post });
+  } catch (error) {
+    console.error(error);
+    return c.json({ error: error }, 500);
   } finally {
     await prisma.$disconnect();
   }

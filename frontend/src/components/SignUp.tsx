@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { words } from "@/pages/Login";
 import { TypewriterEffect } from "./ui/typewriter-effect";
 import { Link, useNavigate } from "react-router-dom";
+import { signup } from "../api/services/authService";
 
 export default function SignupFormDemo() {
   const [firstname, setFirstname] = useState("");
@@ -21,8 +22,25 @@ export default function SignupFormDemo() {
     }
   }, [navigate]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const data = {
+      name: `${firstname || ""} ${lastname || ""}`,
+      email,
+      password,
+    };
+
+    try {
+      const res = await signup(data);
+      console.log(res);
+      if (res?.success) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
     console.log("Form submitted");
   };
   return (

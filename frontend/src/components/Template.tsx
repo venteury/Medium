@@ -8,6 +8,7 @@ import {
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
 import logo from "../assets/logo.svg";
+import { logout } from "@/api/services/authService";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -58,7 +59,9 @@ const Template: React.FC<TemplateProps> = ({ children }) => {
           defaultSelectedKeys={["4"]}
           items={items}
           onClick={(e) => {
-            console.log(e);
+            if (e.key === "logout") {
+              logout();
+            }
           }}
         />
       </Sider>
