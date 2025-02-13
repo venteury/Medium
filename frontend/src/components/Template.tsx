@@ -9,6 +9,7 @@ import type { MenuProps } from "antd";
 import { Layout, Menu, theme } from "antd";
 import logo from "../assets/logo.svg";
 import { logout } from "@/api/services/authService";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -44,6 +45,8 @@ const Template: React.FC<TemplateProps> = ({ children }) => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const navigate = useNavigate();
+
   return (
     <Layout>
       <Sider
@@ -56,11 +59,17 @@ const Template: React.FC<TemplateProps> = ({ children }) => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["4"]}
+          defaultSelectedKeys={[]}
           items={items}
           onClick={(e) => {
             if (e.key === "logout") {
               logout();
+            } else if (e.key === "newBlog") {
+              navigate("/editor?mode=new", { replace: true });
+            } else if (e.key === "myBlogs") {
+              navigate("/my-blogs", { replace: true });
+            } else if (e.key === "home") {
+              navigate("/", { replace: true });
             }
           }}
         />
@@ -97,7 +106,7 @@ const Template: React.FC<TemplateProps> = ({ children }) => {
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Venteury ©{new Date().getFullYear()} Created by Vishal Patel
+          Venteury ©{new Date().getFullYear()} Developed by Vishal Patel
         </Footer>
       </Layout>
     </Layout>

@@ -5,7 +5,7 @@ import { SignupType, SigninType } from "@venteury/blog-common";
 const login = async (data: SignupType) => {
   try {
     const res = await apiClient.post(AUTH_ENDPOINTS.LOGIN, data);
-    console.log(res);
+
     localStorage.setItem("token", res.data.jwt);
     return res.data;
   } catch (error: any) {

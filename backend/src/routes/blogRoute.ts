@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client/edge"; // Use the Prisma Client for
 import { withAccelerate } from "@prisma/extension-accelerate"; // Import Prisma Accelerate extension
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
+import { getPagination } from "../utils/paginationHelper";
 
 import { createPostInput, updatePostInput } from "@venteury/blog-common";
 
@@ -54,32 +55,49 @@ blogRoute.get("/all", async (c) => {
   }
 });
 
-blogRoute.get("/getAllBlog", async (c) => {
+blogRoute.get("/getAllBlogs", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
   try {
-    const page = parseInt(c.req.query("page") ?? "1");
-    const limit = parseInt(c.req.query("limit") ?? "10");
-    const skip = (page - 1) * limit;
+    const search = c.req.query("search") ?? "";
+    const { skip, take, currentPage, pageSize } = getPagination(
+      c.req.query("page") ?? "1",
+      c.req.query("limit") ?? "10"
+    );
 
     const posts = await prisma.post.findMany({
-      take: limit,
+      where: {
+        OR: search
+          ? [{ title: { contains: search, mode: "insensitive" } }]
+          : undefined,
+      },
+      take,
       skip,
     });
 
-    const totalPosts = await prisma.post.count();
-
-    return c.json({
-      data: posts,
-      meta: {
-        page,
-        limit,
-        totalPosts,
-        totalPages: Math.ceil(totalPosts / limit),
+    const totalPosts = await prisma.post.count({
+      where: {
+        OR: search
+          ? [{ title: { contains: search, mode: "insensitive" } }]
+          : undefined,
       },
     });
+
+    return c.json(
+      {
+        success: true,
+        pagination: {
+          currentPage,
+          pageSize,
+          totalPosts,
+          totalPages: Math.ceil(totalPosts / pageSize),
+        },
+        data: posts,
+      },
+      200
+    );
   } catch (error) {
     console.error(error);
     return c.json({ error: error }, 500);
@@ -192,5 +210,3 @@ blogRoute.delete("/delete/:id", async (c) => {
     await prisma.$disconnect();
   }
 });
-
-blogRoute;
