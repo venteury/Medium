@@ -31,8 +31,6 @@ const Homepage = () => {
           debouncedSearch
         );
 
-        console.log(res);
-
         setAllBlogs(res.data);
         setTotalPages(res.pagination.totalPages);
         setCurrentPage(res.pagination.currentPage);

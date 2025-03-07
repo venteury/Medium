@@ -33,7 +33,6 @@ export default function SignupFormDemo() {
 
     try {
       const res = await signup(data);
-      console.log(res);
       if (res?.success) {
         navigate("/");
       }

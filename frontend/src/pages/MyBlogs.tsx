@@ -1,44 +1,45 @@
-import { getPaginatedBlogs } from "@/api/services/blogsServices";
+import { getMyBlogs, deleteBlog } from "@/api/services/blogsServices";
 import { useEffect, useState } from "react";
-import { Spin, Input, Descriptions } from "antd";
-import { MagicCard } from "@/components/magicui/magic-card";
+import { Spin } from "antd";
 import { BentoGrid, BentoCard } from "@/components/magicui/bento-grid";
-import useDebouncedValue from "@/hooks/useDebouncedValue";
 import { FileTextIcon } from "@radix-ui/react-icons";
 
 const MyBlogs = () => {
-  const { Search } = Input;
-
+  const [refresh, setRefresh] = useState(false);
   const [allBlogs, setAllBlogs] = useState([]);
-  const [limit, setLimit] = useState(10);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
-
-  const debouncedSearch = useDebouncedValue(search, 1000);
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const res = await getPaginatedBlogs(
-          page.toString(),
-          limit.toString(),
-          debouncedSearch
-        );
-
-        setAllBlogs(res.data);
-        setTotalPages(res.pagination.totalPages);
-        setCurrentPage(res.pagination.currentPage);
+        const res = await getMyBlogs();
+        setAllBlogs(res.posts);
         setLoading(false);
       } catch (error) {
         setLoading(false);
       }
     };
     fetchBlogs();
-  }, [debouncedSearch, limit, page]);
+  }, [refresh]);
+
+  const handleEdit = async (id?: string) => {
+    if (!id) return;
+    console.log("Edit blog with ID:", id);
+    // Redirect user to edit page or open a modal
+  };
+
+  const handleDelete = async (id?: string) => {
+    const cnf = confirm("Are you sure you want to delete this blog?");
+    if (!cnf) return;
+    if (!id) return;
+    try {
+      await deleteBlog(id);
+      setRefresh((prev) => !prev);
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+    }
+  };
 
   return (
     <div>
@@ -51,31 +52,6 @@ const MyBlogs = () => {
         </div>
       ) : (
         <div>
-          <div className=" flex justify-between">
-            <div></div>
-            <Search
-              className="w-[17vw]"
-              allowClear
-              value={search}
-              placeholder="Search by title"
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-          {/* <div className="mt-5 h-[70vh] overflow-y-scroll  pt-2"> */}
-          {/* {allBlogs?.map((blog: any) => (
-              <section key={blog.id} className=" py-3">
-                <MagicCard
-                  gradientColor="#D9D9D955"
-                  className="flex items-center justify-center h-[21vh]"
-                >
-                  <div>
-                    <h1>{blog.title}</h1>
-                    <p>{blog.content}</p>
-                  </div>
-                </MagicCard>
-              </section>
-            ))} */}
-
           <BentoGrid className="mt-5 h-[70vh] overflow-y-scroll">
             {allBlogs
               ?.map((itm: any) => {
@@ -85,14 +61,22 @@ const MyBlogs = () => {
                   description: itm.content,
                   cta: "Read More",
                   href: `/blog/${itm.id}`,
+                  id: itm.id,
                   className: " bg-gray-200  h-[25vh] ",
                 };
               })
               ?.map((blog: any) => (
-                <BentoCard key={blog.id} name={blog.name} {...blog} />
+                <BentoCard
+                  key={blog.id}
+                  name={blog.name}
+                  isMyBlog={true}
+                  id={blog.id}
+                  onDelete={handleDelete}
+                  onEdit={handleEdit}
+                  {...blog}
+                />
               ))}
           </BentoGrid>
-          {/* </div> */}
         </div>
       )}
     </div>

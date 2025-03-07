@@ -24,7 +24,6 @@ const signup = async (data: SigninType) => {
 };
 
 const logout = () => {
-  console.log("Logging out");
   localStorage.removeItem("token");
   window.location.href = "/login";
 };

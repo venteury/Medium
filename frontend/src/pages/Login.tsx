@@ -32,7 +32,6 @@ const Login = () => {
   useEffect(() => {
     let pathName = window.location.pathname;
     if (!pathName.includes("login")) {
-      console.log("effect");
       const isLoggedIn = localStorage.getItem("token");
       if (isLoggedIn) {
         navigate("/", { replace: true });
@@ -106,7 +105,6 @@ const Login = () => {
                       e.preventDefault();
                       try {
                         const res = await login({ email, password });
-                        console.log(res);
                         if (res) {
                           navigate("/", { replace: true });
                         } else {
