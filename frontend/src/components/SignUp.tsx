@@ -39,8 +39,6 @@ export default function SignupFormDemo() {
     } catch (error) {
       console.error(error);
     }
-
-    console.log("Form submitted");
   };
   return (
     <section className="h-screen w-screen">

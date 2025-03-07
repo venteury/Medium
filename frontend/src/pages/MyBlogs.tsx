@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import { Spin } from "antd";
 import { BentoGrid, BentoCard } from "@/components/magicui/bento-grid";
 import { FileTextIcon } from "@radix-ui/react-icons";
+import { useNavigate } from "react-router-dom";
 
 const MyBlogs = () => {
   const [refresh, setRefresh] = useState(false);
   const [allBlogs, setAllBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -23,10 +26,9 @@ const MyBlogs = () => {
     fetchBlogs();
   }, [refresh]);
 
-  const handleEdit = async (id?: string) => {
+  const handleEdit = (id?: string) => {
     if (!id) return;
-    console.log("Edit blog with ID:", id);
-    // Redirect user to edit page or open a modal
+    navigate(`/editor?mode=edit&id=${id}`, { replace: true });
   };
 
   const handleDelete = async (id?: string) => {
