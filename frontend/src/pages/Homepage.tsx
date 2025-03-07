@@ -82,7 +82,7 @@ const Homepage = () => {
             ))}
           </div> */}
 
-          <BentoGrid className="mt-5 h-[68vh] overflow-y-scroll no-scrollbar">
+          <BentoGrid className="mt-5 h-[67vh] overflow-y-scroll no-scrollbar">
             {allBlogs
               ?.map((itm: any) => {
                 return {
@@ -99,6 +99,7 @@ const Homepage = () => {
               ))}
           </BentoGrid>
           <Pagination
+            className="pt-2"
             align="center"
             defaultCurrent={1}
             total={totalBlogs}

@@ -7,9 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const ReadBlog = () => {
   const { id } = useParams();
-
   const navigate = useNavigate();
-
   const [blog, setBlog] = useState({
     title: "",
     content: "",
