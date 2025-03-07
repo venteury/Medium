@@ -11,6 +11,15 @@ const getMyBlogs = async () => {
   }
 };
 
+const getBlogById = async (id: string) => {
+  try {
+    const res = await apiClient.get(BLOGS_ENDPOINTS.GET_BY_ID(id));
+    return res.data;
+  } catch (error: any) {
+    throw error.response?.data || error.message;
+  }
+};
+
 const createBlog = async (data: CreatePostType) => {
   try {
     const res = await apiClient.post(BLOGS_ENDPOINTS.CREATE, data);
@@ -53,4 +62,11 @@ const getPaginatedBlogs = async (
   }
 };
 
-export { getMyBlogs, createBlog, updateBlog, deleteBlog, getPaginatedBlogs };
+export {
+  getMyBlogs,
+  getBlogById,
+  createBlog,
+  updateBlog,
+  deleteBlog,
+  getPaginatedBlogs,
+};
