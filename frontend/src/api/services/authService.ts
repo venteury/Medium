@@ -7,6 +7,7 @@ const login = async (data: SignupType) => {
     const res = await apiClient.post(AUTH_ENDPOINTS.LOGIN, data);
 
     localStorage.setItem("token", res.data.jwt);
+    window.location.href = "/";
     return res.data;
   } catch (error: any) {
     throw error.response?.data || error.message;
