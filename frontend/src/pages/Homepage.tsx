@@ -14,6 +14,7 @@ const Homepage = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalBlogs, setTotalBlogs] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -26,13 +27,16 @@ const Homepage = () => {
         const res = await getPaginatedBlogs(
           page.toString(),
           // limit.toString(),
-          "10",
+          "5",
           debouncedSearch
         );
+
+        console.log(res);
 
         setAllBlogs(res.data);
         setTotalPages(res.pagination.totalPages);
         setCurrentPage(res.pagination.currentPage);
+        setTotalBlogs(res.pagination.totalPosts);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -62,8 +66,8 @@ const Homepage = () => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          {/* <div className="mt-5 h-[70vh] overflow-y-scroll  pt-2"> */}
-          {/* {allBlogs?.map((blog: any) => (
+          {/* <div className="mt-5 h-[70vh] overflow-y-scroll  pt-2">
+            {allBlogs?.map((blog: any) => (
               <section key={blog.id} className=" py-3">
                 <MagicCard
                   gradientColor="#D9D9D955"
@@ -75,9 +79,10 @@ const Homepage = () => {
                   </div>
                 </MagicCard>
               </section>
-            ))} */}
+            ))}
+          </div> */}
 
-          <BentoGrid className="mt-5 h-[68vh] overflow-y-scroll">
+          <BentoGrid className="mt-5 h-[68vh] overflow-y-scroll no-scrollbar">
             {allBlogs
               ?.map((itm: any) => {
                 return {
@@ -96,12 +101,14 @@ const Homepage = () => {
           <Pagination
             align="center"
             defaultCurrent={1}
-            total={totalPages}
-            onChange={(page) => setPage(page)}
+            total={totalBlogs}
+            pageSize={5}
+            hideOnSinglePage={totalPages === 1}
             current={currentPage}
-            className=""
+            onChange={(page) => {
+              setPage(page);
+            }}
           />
-          {/* </div> */}
         </div>
       )}
     </div>

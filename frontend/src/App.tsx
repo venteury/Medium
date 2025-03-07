@@ -6,6 +6,7 @@ const LognIn = lazy(() => import("./pages/Login.tsx"));
 const SignUp = lazy(() => import("./pages/SignUp.tsx"));
 const MyBlogs = lazy(() => import("./pages/MyBlogs.tsx"));
 const EditorPage = lazy(() => import("./pages/EditorPage.tsx"));
+const ReadBlog = lazy(() => import("./pages/ReadBlog.tsx"));
 interface ProtectedRouteProps {
   isAllowed: boolean;
   redirectPath?: string;
@@ -42,7 +43,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/my-blogs" element={<MyBlogs />} />
           <Route path="/editor" element={<EditorPage />} />
-          {/* <Route path="/blog/:id" element={<h1>Profile Page</h1>} /> */}
+          <Route path="/blog/:id" element={<ReadBlog />} />
         </Route>
       </Routes>
     </>
