@@ -1,7 +1,7 @@
 import { getPaginatedBlogs } from "@/api/services/blogsServices";
 import { useEffect, useState } from "react";
-import { Spin, Input, Descriptions } from "antd";
-import { MagicCard } from "@/components/magicui/magic-card";
+import { Spin, Input, Pagination } from "antd";
+// import { MagicCard } from "@/components/magicui/magic-card";
 import { BentoGrid, BentoCard } from "@/components/magicui/bento-grid";
 import useDebouncedValue from "@/hooks/useDebouncedValue";
 import { FileTextIcon } from "@radix-ui/react-icons";
@@ -10,7 +10,7 @@ const Homepage = () => {
   const { Search } = Input;
 
   const [allBlogs, setAllBlogs] = useState([]);
-  const [limit, setLimit] = useState(10);
+  // const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +25,8 @@ const Homepage = () => {
         setLoading(true);
         const res = await getPaginatedBlogs(
           page.toString(),
-          limit.toString(),
+          // limit.toString(),
+          "10",
           debouncedSearch
         );
 
@@ -38,7 +39,7 @@ const Homepage = () => {
       }
     };
     fetchBlogs();
-  }, [debouncedSearch, limit, page]);
+  }, [debouncedSearch, page]);
 
   return (
     <div>
@@ -76,7 +77,7 @@ const Homepage = () => {
               </section>
             ))} */}
 
-          <BentoGrid className="mt-5 h-[70vh] overflow-y-scroll">
+          <BentoGrid className="mt-5 h-[68vh] overflow-y-scroll">
             {allBlogs
               ?.map((itm: any) => {
                 return {
@@ -92,6 +93,14 @@ const Homepage = () => {
                 <BentoCard key={blog.id} name={blog.name} {...blog} />
               ))}
           </BentoGrid>
+          <Pagination
+            align="center"
+            defaultCurrent={1}
+            total={totalPages}
+            onChange={(page) => setPage(page)}
+            current={currentPage}
+            className=""
+          />
           {/* </div> */}
         </div>
       )}
